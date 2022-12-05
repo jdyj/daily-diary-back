@@ -103,7 +103,10 @@ public class DiaryController {
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<Void> deleteDiary(@PathVariable Long id, @ApiIgnore @Auth String memberId) {
+  public ResponseEntity<Void> deleteDiary(@PathVariable Long id,
+      HttpServletRequest servletRequest) {
+    String token = resolveToken(servletRequest);
+    String memberId = validateToken(token);
 
     Member member = memberService.findMemberById(memberId);
     diaryService.deleteDiary(member, id);
