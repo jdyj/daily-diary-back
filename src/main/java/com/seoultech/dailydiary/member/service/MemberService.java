@@ -10,6 +10,7 @@ import com.seoultech.dailydiary.image.Image;
 import com.seoultech.dailydiary.image.ImageService;
 import com.seoultech.dailydiary.member.Member;
 import com.seoultech.dailydiary.member.MemberRepository;
+import com.seoultech.dailydiary.member.controller.LoginResponse;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
@@ -39,7 +40,7 @@ public class MemberService {
     return memberRepository.findById(memberId).orElseThrow(NotExistMemberException::new);
   }
 
-  public TokenDto login(String accessToken) {
+  public LoginResponse login(String accessToken) {
     String apiUrl = "https://kapi.kakao.com/v2/user/me";
     String responseBody = get(apiUrl, accessToken);
 
@@ -63,7 +64,9 @@ public class MemberService {
       member.setProfileImage(profileImage);
     }
 
-    return tokenProvider.generateToken(member.getId());
+    TokenDto tokenDto = tokenProvider.generateToken(member.getId());
+
+    return LoginResponse.from(tokenDto, member);
   }
 
   private String get(String apiUrl, String accessToken) {
