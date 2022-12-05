@@ -14,8 +14,6 @@ spring:
         default_batch_fetch_size: 1000
     show-sql: true
 
-  profiles:
-    include: oauth
 
 file:
   dir: /Users/jojaeyeong/Desktop/upload/
