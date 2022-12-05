@@ -26,7 +26,7 @@ public class JwtFilter implements Filter {
 
   public static final String AUTHORIZATION_HEADER = "Authorization";
   public static final String BEARER_PREFIX = "Bearer ";
-  private static final String[] whitelist = {"/images", "/api/v1/members/login"};
+  private static final String[] whitelist = {"/images**", "/api/v1/members/login"};
 
   @Override
   public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
