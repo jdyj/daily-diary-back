@@ -32,23 +32,14 @@ public class Member {
   @OneToOne(fetch = FetchType.EAGER)
   private Image profileImage;
 
-  @Enumerated(EnumType.STRING)
-  @Column(nullable = false)
-  private Role role;
-
   @OneToMany(mappedBy = "member")
   private List<Bookmark> bookmarkList = new ArrayList<>();
 
-  public String getRoleKey() {
-    return this.role.getKey();
-  }
-
   @Builder
-  public Member(String name, String email, Role role) {
+  public Member(String name, String email) {
     this.id = UUID.randomUUID().toString();
     this.name = name;
     this.email = email;
-    this.role = role;
   }
 
   public void setProfileImage(Image profileImage) {
