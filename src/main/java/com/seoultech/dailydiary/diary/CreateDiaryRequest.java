@@ -18,7 +18,7 @@ public class CreateDiaryRequest {
 
   private Boolean isPublic;
 
-  private MultipartFile multipartFile;
+  private MultipartFile image;
 
   public Diary toEntity(Member member) {
     return new Diary(title, contents, member, isPublic);

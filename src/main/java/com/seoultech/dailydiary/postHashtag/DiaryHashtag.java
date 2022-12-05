@@ -33,7 +33,7 @@ public class DiaryHashtag {
     this.hashtag = hashtag;
     diary.getDiaryHashtagList().add(this);
     hashtag.getDiaryHashtagList().add(this);
-    key = new Key(hashtag.getId(), diary.getId());
+    this.key = new Key(hashtag.getId(), diary.getId());
   }
 
   @Embeddable

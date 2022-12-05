@@ -5,6 +5,7 @@ import com.seoultech.dailydiary.image.Image;
 import com.seoultech.dailydiary.bookmark.Bookmark;
 import com.seoultech.dailydiary.member.Member;
 import com.seoultech.dailydiary.postHashtag.DiaryHashtag;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -34,13 +35,13 @@ public class Diary extends BaseTimeEntity {
   private Member member;
 
   @OneToMany(mappedBy = "diary")
-  private List<DiaryHashtag> diaryHashtagList;
+  private List<DiaryHashtag> diaryHashtagList = new ArrayList<>();
 
   @OneToOne
   private Image thumbnailImage;
 
   @OneToMany(mappedBy = "diary")
-  private List<Bookmark> bookmarkList;
+  private List<Bookmark> bookmarkList = new ArrayList<>();
 
   private Boolean isPublic;
 

@@ -3,6 +3,7 @@ package com.seoultech.dailydiary.diary;
 import com.seoultech.dailydiary.bookmark.Bookmark;
 import com.seoultech.dailydiary.exception.InvalidDiaryAccess;
 import com.seoultech.dailydiary.exception.NotExistDiaryException;
+import com.seoultech.dailydiary.hashtag.Hashtag;
 import com.seoultech.dailydiary.hashtag.service.BookmarkDiary;
 import com.seoultech.dailydiary.hashtag.service.HashtagService;
 import com.seoultech.dailydiary.image.Category;
@@ -30,13 +31,14 @@ public class DiaryService {
   private final HashtagService hashtagService;
   private final ImageService imageService;
 
-  public void save(Diary diary, List<String> tags, MultipartFile multipartFile) throws IOException {
+  public void save(Diary diary, CreateDiaryRequest request) throws IOException {
     Diary savedDiary = diaryRepository.save(diary);
-    if (tags.size() > 0) {
-      diaryHashtagService.create(savedDiary, hashtagService.createHashtag(tags));
+    if (request.getTags() != null) {
+      List<Hashtag> hashtag = hashtagService.createHashtag(request.getTags());
+      diaryHashtagService.create(savedDiary, hashtag);
     }
-    if (multipartFile != null) {
-      savedDiary.setThumbnailImage(imageService.storeFile(multipartFile, Category.DIARY));
+    if (request.getImage() != null) {
+      savedDiary.setThumbnailImage(imageService.storeFile(request.getImage(), Category.DIARY));
     }
   }
 
@@ -61,6 +63,12 @@ public class DiaryService {
           .collect(Collectors.toList());
     }
 
+    if (sort.equals("ASC")) {
+      diaryList.sort(Comparator.comparing(Diary::getCreatedDate));
+    } else {
+      diaryList.sort((a1, a2) -> a2.getCreatedDate().compareTo(a1.getCreatedDate()));
+    }
+
     List<PreviewDiary> collect = new ArrayList<>();
     for (Diary diary : diaryList) {
       if (!diary.getIsPublic()) {
@@ -72,11 +80,6 @@ public class DiaryService {
       }
     }
 
-    if (sort.equals("ASC")) {
-      collect.sort(Comparator.comparing(PreviewDiary::getCreatedDate));
-    } else {
-      collect.sort((a1, a2) -> a2.getCreatedDate().compareTo(a1.getCreatedDate()));
-    }
     return collect;
   }
 
@@ -93,6 +96,11 @@ public class DiaryService {
           .limit(limit)
           .collect(Collectors.toList());
     }
+    if (sort.equals("ASC")) {
+      diaryList.sort(Comparator.comparing(Diary::getCreatedDate));
+    } else {
+      diaryList.sort((a1, a2) -> a2.getCreatedDate().compareTo(a1.getCreatedDate()));
+    }
 
     List<PreviewDiary> collect = new ArrayList<>();
     for (Diary diary : diaryList) {
@@ -105,11 +113,6 @@ public class DiaryService {
       }
     }
 
-    if (sort.equals("ASC")) {
-      collect.sort(Comparator.comparing(PreviewDiary::getCreatedDate));
-    } else {
-      collect.sort((a1, a2) -> a2.getCreatedDate().compareTo(a1.getCreatedDate()));
-    }
     return collect;
   }
 

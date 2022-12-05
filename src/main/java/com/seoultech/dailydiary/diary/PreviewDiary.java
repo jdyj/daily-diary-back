@@ -2,6 +2,7 @@ package com.seoultech.dailydiary.diary;
 
 import com.seoultech.dailydiary.member.Member;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
@@ -14,7 +15,7 @@ public class PreviewDiary {
   private Long diaryId;
   private String title;
   private String contents;
-  private LocalDateTime createdDate;
+  private String createdAt;
   private List<String> tags;
   private String name;
   private String profileImage;
@@ -28,7 +29,8 @@ public class PreviewDiary {
         .collect(Collectors.toList());
 
     return new PreviewDiary(diary.getId(), diary.getTitle(), diary.getContents(),
-        diary.getCreatedDate(), collectTags, member.getName(),
+        diary.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), collectTags,
+        member.getName(),
         member.getProfileImage().getStoreFileName(),
         diary.getThumbnailImage().getStoreFileName());
   }
