@@ -35,7 +35,8 @@ public class DetailDiary {
     return new DetailDiary(diary.getId(), diary.getTitle(), diary.getContents(),
         diary.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
         diary.getIsPublic(), isBookmark, collect,
-        diary.getThumbnailImage().getStoreFileName(), Author.from(diary.getMember()), bookmarkUser);
+        diary.getThumbnailImage() == null ? null : diary.getThumbnailImage().getStoreFileName(),
+        Author.from(diary.getMember()), bookmarkUser);
   }
 
 }

@@ -39,7 +39,7 @@ public class PreviewDiary {
         diary.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
         collectTags,
         diary.getMember().getName(),
-        diary.getThumbnailImage().getStoreFileName(),
+        diary.getThumbnailImage() == null ? null : diary.getThumbnailImage().getStoreFileName(),
         Author.from(diary.getMember()),
         diary.getIsPublic(), bookmarkUser);
   }
