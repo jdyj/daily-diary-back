@@ -6,11 +6,13 @@ import com.google.gson.JsonParser;
 import com.seoultech.dailydiary.config.jwt.TokenDto;
 import com.seoultech.dailydiary.config.jwt.TokenProvider;
 import com.seoultech.dailydiary.exception.NotExistMemberException;
+import com.seoultech.dailydiary.image.Category;
 import com.seoultech.dailydiary.image.Image;
 import com.seoultech.dailydiary.image.ImageService;
 import com.seoultech.dailydiary.member.Member;
 import com.seoultech.dailydiary.member.MemberRepository;
 import com.seoultech.dailydiary.member.controller.LoginResponse;
+import java.io.IOException;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
@@ -21,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -83,6 +86,11 @@ public class MemberService {
     } catch (HttpStatusCodeException e) {
       throw new RuntimeException("API 요청과 응답 실패", e);
     }
+  }
+
+  public void setProfileImage(Member member, MultipartFile multipartFile) throws IOException {
+    Image image = imageService.storeFile(multipartFile, Category.PROFILE);
+    member.setProfileImage(image);
   }
 
 }
