@@ -158,7 +158,7 @@ public class DiaryService {
       }
     }
 
-    return DetailDiary.from(diary, member, isBookmark);
+    return DetailDiary.from(diary, isBookmark);
   }
 
   public void deleteDiary(Member member, Long diaryId) {
@@ -169,6 +169,15 @@ public class DiaryService {
       throw new IllegalStateException();
     }
 
+  }
+
+  public DetailDiary publicDetailDiary(Long diaryId) {
+    Diary diary = findById(diaryId);
+    if (!diary.getIsPublic()) {
+      throw new InvalidDiaryAccess();
+    }
+
+    return DetailDiary.from(diary, false);
   }
 
 }

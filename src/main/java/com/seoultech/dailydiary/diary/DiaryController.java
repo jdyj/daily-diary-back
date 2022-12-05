@@ -54,8 +54,16 @@ public class DiaryController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<DetailDiary> detailDiary(@ApiIgnore @Auth String memberId,
+  public ResponseEntity<DetailDiary> detailDiary(HttpServletRequest servletRequest,
       @PathVariable Long id) {
+    String token = resolveToken(servletRequest);
+
+    if (token == null) {
+      return ResponseEntity.ok()
+          .body(diaryService.publicDetailDiary(id));
+    }
+
+    String memberId = validateToken(token);
     Member member = memberService.findMemberById(memberId);
     return ResponseEntity.ok()
         .body(diaryService.detailDiary(member, id));
