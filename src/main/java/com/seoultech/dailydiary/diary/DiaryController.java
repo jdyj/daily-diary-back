@@ -4,10 +4,21 @@ package com.seoultech.dailydiary.diary;
 import static com.seoultech.dailydiary.config.jwt.JwtFilter.AUTHORIZATION_HEADER;
 import static com.seoultech.dailydiary.config.jwt.JwtFilter.BEARER_PREFIX;
 
+import com.seoultech.dailydiary.config.jwt.JwtConfig;
+import com.seoultech.dailydiary.config.jwt.TokenProvider;
 import com.seoultech.dailydiary.config.login.Auth;
 import com.seoultech.dailydiary.member.Member;
 import com.seoultech.dailydiary.member.service.MemberService;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SecurityException;
 import java.io.IOException;
+import java.security.Key;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -55,7 +66,8 @@ public class DiaryController {
       @RequestParam("sort") String sort,
       @RequestParam("limit") String limit, @RequestParam("lte") String lte) {
 
-    String memberId = resolveToken(servletRequest);
+    String token = resolveToken(servletRequest);
+    String memberId = validateToken(token);
 
     if (memberId == null) {
       return ResponseEntity.ok()
@@ -93,6 +105,23 @@ public class DiaryController {
       return bearerToken.substring(7);
     }
     return null;
+  }
+
+  private String validateToken(String token) {
+
+    byte[] decode = Decoders.BASE64.decode(JwtConfig.JWT_SECRET);
+    Key key = Keys.hmacShaKeyFor(decode);
+
+    try {
+      Claims claims = Jwts.parserBuilder()
+          .setSigningKey(key)
+          .build()
+          .parseClaimsJws(token)
+          .getBody();
+      return claims.get("jti", String.class);
+    } catch (SecurityException | MalformedJwtException | ExpiredJwtException | UnsupportedJwtException | IllegalArgumentException e) {
+      throw e;
+    }
   }
 
 }
