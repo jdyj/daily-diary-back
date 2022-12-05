@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,7 +26,7 @@ public class BookmarkController {
   private final DiaryService diaryService;
 
   @PostMapping
-  public ResponseEntity<Void> likeDiary(@Auth String memberId,
+  public ResponseEntity<Void> likeDiary(@ApiIgnore @Auth String memberId,
       @RequestBody LikeDiaryRequest request) {
     Member member = memberService.findMemberById(memberId);
     Diary diary = diaryService.findById(request.getDiaryId());

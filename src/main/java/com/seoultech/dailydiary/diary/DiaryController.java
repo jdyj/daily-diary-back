@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,21 +26,22 @@ public class DiaryController {
   private final MemberService memberService;
 
   @PostMapping
-  public void save(@ModelAttribute CreateDiaryRequest request, @Auth String memberId)
+  public void save(@ModelAttribute CreateDiaryRequest request, @ApiIgnore @Auth String memberId)
       throws IOException {
     Member member = memberService.findMemberById(memberId);
     diaryService.save(request.toEntity(member), request.getTags(), request.getMultipartFile());
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<DetailDiary> detailDiary(@Auth String memberId, @PathVariable Long id) {
+  public ResponseEntity<DetailDiary> detailDiary(@ApiIgnore @Auth String memberId,
+      @PathVariable Long id) {
     Member member = memberService.findMemberById(memberId);
     return ResponseEntity.ok()
         .body(diaryService.detailDiary(member, id));
   }
 
   @GetMapping
-  public ResponseEntity<DiaryListResponse> listPublicDiary(@Auth String memberId,
+  public ResponseEntity<DiaryListResponse> listPublicDiary(@ApiIgnore @Auth String memberId,
       @RequestParam String sort,
       @RequestParam Long limit, @RequestParam Long lte) {
     Member member = memberService.findMemberById(memberId);
@@ -49,7 +51,7 @@ public class DiaryController {
   }
 
   @GetMapping("/bookmark")
-  public ResponseEntity<DiaryListResponse> listBookmarkDiary(@Auth String memberId,
+  public ResponseEntity<DiaryListResponse> listBookmarkDiary(@ApiIgnore @Auth String memberId,
       @RequestParam String sort,
       @RequestParam Long limit, @RequestParam Long lte) {
     Member member = memberService.findMemberById(memberId);

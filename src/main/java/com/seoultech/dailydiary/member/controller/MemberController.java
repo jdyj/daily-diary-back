@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 @RequiredArgsConstructor
@@ -15,10 +16,10 @@ public class MemberController {
 
   private final MemberService memberService;
 
-  @GetMapping("/mypage")
-  public void myPage(@Auth String memberId) {
-
-  }
+//  @GetMapping("/mypage")
+//  public void myPage(@ApiIgnore @Auth String memberId) {
+//
+//  }
 
 
 }
