@@ -1,6 +1,9 @@
 package com.seoultech.dailydiary.diary;
 
 
+import static com.seoultech.dailydiary.config.jwt.JwtFilter.AUTHORIZATION_HEADER;
+import static com.seoultech.dailydiary.config.jwt.JwtFilter.BEARER_PREFIX;
+
 import com.seoultech.dailydiary.config.login.Auth;
 import com.seoultech.dailydiary.member.Member;
 import com.seoultech.dailydiary.member.service.MemberService;
@@ -9,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,13 +55,13 @@ public class DiaryController {
       @RequestParam("sort") String sort,
       @RequestParam("limit") String limit, @RequestParam("lte") String lte) {
 
-    if (servletRequest.getAttribute("memberId") == null) {
+    String memberId = resolveToken(servletRequest);
+
+    if (memberId == null) {
       return ResponseEntity.ok()
           .body(DiaryListResponse.from(
               diaryService.publicList(sort, Long.valueOf(limit), Long.valueOf(lte))));
     }
-
-    String memberId = servletRequest.getAttribute("memberId").toString();
     Member member = memberService.findMemberById(memberId);
 
     return ResponseEntity.ok()
@@ -83,5 +87,12 @@ public class DiaryController {
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 
+  private String resolveToken(HttpServletRequest request) {
+    String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
+    if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
+      return bearerToken.substring(7);
+    }
+    return null;
+  }
 
 }
