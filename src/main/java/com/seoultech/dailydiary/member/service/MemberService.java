@@ -63,8 +63,7 @@ public class MemberService {
       member.setProfileImage(profileImage);
     }
 
-    TokenDto token = tokenProvider.generateToken(member.getId());
-    return token;
+    return tokenProvider.generateToken(member.getId());
   }
 
   private String get(String apiUrl, String accessToken) {

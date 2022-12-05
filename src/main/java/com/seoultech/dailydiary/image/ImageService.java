@@ -46,7 +46,8 @@ public class ImageService {
 
     List<Image> images = collect.stream()
         .map(
-            (name) -> new Image(name.getOriginalFilename(), name.getStoreFileName(), Category.DIARY))
+            (name) -> new Image(name.getOriginalFilename(), name.getStoreFileName(),
+                Category.DIARY))
         .collect(Collectors.toList());
     imageRepository.saveAll(images);
 
