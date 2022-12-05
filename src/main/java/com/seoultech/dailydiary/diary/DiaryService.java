@@ -52,15 +52,16 @@ public class DiaryService {
         .stream()
         .map(Bookmark::getDiary)
         .collect(Collectors.toList());
-    if (lte != null) {
-      diaryList = diaryList.stream().filter(diary -> diary.getId() > lte)
-          .collect(Collectors.toList());
-    }
-
     if (sort.equals("ASC")) {
       diaryList.sort(Comparator.comparing(Diary::getCreatedDate));
+      diaryList = diaryList.stream()
+          .filter(diary -> diary.getId() > lte)
+          .collect(Collectors.toList());
     } else {
       diaryList.sort((a1, a2) -> a2.getCreatedDate().compareTo(a1.getCreatedDate()));
+      diaryList = diaryList.stream()
+          .filter(diary -> diary.getId() < lte)
+          .collect(Collectors.toList());
     }
 
     List<PreviewDiary> collect = new ArrayList<>();
@@ -85,16 +86,10 @@ public class DiaryService {
 
   public List<PreviewDiary> publicList(String sort, Long limit, Long lte) {
     List<Diary> diaryList;
-    if (lte == null) {
-      diaryList = diaryRepository.findAll();
+    if (sort.equals("ASC")) {
+      diaryList = diaryRepository.findDiariesLessThanId(lte);
     } else {
       diaryList = diaryRepository.findDiariesGreaterThanId(lte);
-    }
-
-    if (sort.equals("ASC")) {
-      diaryList.sort(Comparator.comparing(Diary::getCreatedDate));
-    } else {
-      diaryList.sort((a1, a2) -> a2.getCreatedDate().compareTo(a1.getCreatedDate()));
     }
 
     List<PreviewDiary> collect = new ArrayList<>();
@@ -114,16 +109,10 @@ public class DiaryService {
 
   public List<PreviewDiary> diaryList(Member member, String sort, Long limit, Long lte) {
     List<Diary> diaryList;
-    if (lte == null) {
-      diaryList = diaryRepository.findAll();
+    if (sort.equals("ASC")) {
+      diaryList = diaryRepository.findDiariesLessThanId(lte);
     } else {
       diaryList = diaryRepository.findDiariesGreaterThanId(lte);
-    }
-
-    if (sort.equals("ASC")) {
-      diaryList.sort(Comparator.comparing(Diary::getCreatedDate));
-    } else {
-      diaryList.sort((a1, a2) -> a2.getCreatedDate().compareTo(a1.getCreatedDate()));
     }
 
     List<PreviewDiary> collect = new ArrayList<>();

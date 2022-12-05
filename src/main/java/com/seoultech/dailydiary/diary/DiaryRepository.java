@@ -7,6 +7,9 @@ import org.springframework.data.repository.query.Param;
 
 public interface DiaryRepository extends JpaRepository<Diary, Long> {
 
-  @Query("select d from Diary d where d.id > :id")
+  @Query("select d from Diary d where d.id > :id order by d.createdDate asc")
   List<Diary> findDiariesGreaterThanId(@Param("id") Long id);
+
+  @Query("select d from Diary d where d.id < :id order by d.createdDate desc")
+  List<Diary> findDiariesLessThanId(@Param("id") Long id);
 }
