@@ -18,7 +18,6 @@ public class PreviewDiary {
   private String createdAt;
   private List<String> tags;
   private String name;
-  private String profileImage;
   private String image;
   private Author author;
   private Boolean isPublic;
@@ -33,7 +32,6 @@ public class PreviewDiary {
     return new PreviewDiary(diary.getId(), diary.getTitle(), diary.getContents(),
         diary.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), collectTags,
         diary.getMember().getName(),
-        diary.getMember().getProfileImage().getStoreFileName(),
         diary.getThumbnailImage().getStoreFileName(),
         Author.from(diary.getMember()),
         diary.getIsPublic());
