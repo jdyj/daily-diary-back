@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -73,5 +74,14 @@ public class DiaryController {
         .body(DiaryListResponse.from(
             diaryService.bookmarkDiaryList(member, sort, Long.valueOf(limit), Long.valueOf(lte))));
   }
+
+  @DeleteMapping("/{id}")
+  public ResponseEntity<Void> deleteDiary(@PathVariable Long id, @ApiIgnore @Auth String memberId) {
+
+    Member member = memberService.findMemberById(memberId);
+    diaryService.deleteDiary(member, id);
+    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+  }
+
 
 }

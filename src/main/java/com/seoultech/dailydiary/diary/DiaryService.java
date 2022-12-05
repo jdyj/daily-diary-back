@@ -161,4 +161,14 @@ public class DiaryService {
     return DetailDiary.from(diary, member, isBookmark);
   }
 
+  public void deleteDiary(Member member, Long diaryId) {
+    Diary diary = findById(diaryId);
+    if (diary.getMember().getId().equals(member.getId())) {
+      diaryRepository.delete(diary);
+    } else {
+      throw new IllegalStateException();
+    }
+
+  }
+
 }

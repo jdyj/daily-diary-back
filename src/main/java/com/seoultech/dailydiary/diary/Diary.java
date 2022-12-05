@@ -34,13 +34,13 @@ public class Diary extends BaseTimeEntity {
   @ManyToOne(fetch = FetchType.LAZY)
   private Member member;
 
-  @OneToMany(mappedBy = "diary")
+  @OneToMany(mappedBy = "diary", orphanRemoval = true)
   private List<DiaryHashtag> diaryHashtagList = new ArrayList<>();
 
   @OneToOne
   private Image thumbnailImage;
 
-  @OneToMany(mappedBy = "diary")
+  @OneToMany(mappedBy = "diary", orphanRemoval = true)
   private List<Bookmark> bookmarkList = new ArrayList<>();
 
   private Boolean isPublic;
