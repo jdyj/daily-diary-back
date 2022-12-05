@@ -60,7 +60,9 @@ public class MemberController {
   }
 
   @GetMapping
-  public ResponseEntity<UserInformation> myInfo(@ApiIgnore @Auth String memberId) {
+  public ResponseEntity<UserInformation> myInfo(HttpServletRequest servletRequest) {
+    String token = resolveToken(servletRequest);
+    String memberId = validateToken(token);
     return ResponseEntity.ok()
         .body(UserInformation.from(memberService.findMemberById(memberId)));
   }
