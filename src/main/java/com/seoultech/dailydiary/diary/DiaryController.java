@@ -6,6 +6,7 @@ import com.seoultech.dailydiary.member.Member;
 import com.seoultech.dailydiary.member.service.MemberService;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -26,10 +27,12 @@ public class DiaryController {
   private final MemberService memberService;
 
   @PostMapping
-  public void save(@ModelAttribute CreateDiaryRequest request, @ApiIgnore @Auth String memberId)
+  public ResponseEntity<Void> save(@ModelAttribute CreateDiaryRequest request,
+      @ApiIgnore @Auth String memberId)
       throws IOException {
     Member member = memberService.findMemberById(memberId);
     diaryService.save(request.toEntity(member), request.getTags(), request.getMultipartFile());
+    return new ResponseEntity<>(HttpStatus.CREATED);
   }
 
   @GetMapping("/{id}")
