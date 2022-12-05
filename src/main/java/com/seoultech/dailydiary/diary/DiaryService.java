@@ -73,10 +73,10 @@ public class DiaryService {
     for (Diary diary : diaryList) {
       if (!diary.getIsPublic()) {
         if (diary.getMember().getId().equals(member.getId())) {
-          collect.add(PreviewDiary.from(diary, diary.getMember()));
+          collect.add(PreviewDiary.from(diary));
         }
       } else {
-        collect.add(PreviewDiary.from(diary, diary.getMember()));
+        collect.add(PreviewDiary.from(diary));
       }
     }
 
@@ -105,7 +105,7 @@ public class DiaryService {
     List<PreviewDiary> collect = new ArrayList<>();
     for (Diary diary : diaryList) {
       if (diary.getIsPublic()) {
-        collect.add(PreviewDiary.from(diary, diary.getMember()));
+        collect.add(PreviewDiary.from(diary));
       }
     }
 
@@ -135,10 +135,10 @@ public class DiaryService {
     for (Diary diary : diaryList) {
       if (!diary.getIsPublic()) {
         if (diary.getMember().getId().equals(member.getId())) {
-          collect.add(PreviewDiary.from(diary, diary.getMember()));
+          collect.add(PreviewDiary.from(diary));
         }
       } else {
-        collect.add(PreviewDiary.from(diary, diary.getMember()));
+        collect.add(PreviewDiary.from(diary));
       }
     }
 

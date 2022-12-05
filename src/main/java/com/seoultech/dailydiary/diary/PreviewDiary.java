@@ -20,8 +20,10 @@ public class PreviewDiary {
   private String name;
   private String profileImage;
   private String thumbnailImage;
+  private Author author;
+  private Boolean isPublic;
 
-  public static PreviewDiary from(Diary diary, Member member) {
+  public static PreviewDiary from(Diary diary) {
 
     List<String> collectTags = diary.getDiaryHashtagList()
         .stream()
@@ -30,9 +32,11 @@ public class PreviewDiary {
 
     return new PreviewDiary(diary.getId(), diary.getTitle(), diary.getContents(),
         diary.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), collectTags,
-        member.getName(),
-        member.getProfileImage().getStoreFileName(),
-        diary.getThumbnailImage().getStoreFileName());
+        diary.getMember().getName(),
+        diary.getMember().getProfileImage().getStoreFileName(),
+        diary.getThumbnailImage().getStoreFileName(),
+        Author.from(diary.getMember()),
+        diary.getIsPublic());
   }
 
 }
