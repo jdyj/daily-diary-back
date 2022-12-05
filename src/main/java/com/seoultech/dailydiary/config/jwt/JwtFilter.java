@@ -91,7 +91,7 @@ public class JwtFilter implements Filter {
           .getBody();
       servletRequest.setAttribute("memberId", claims.get("jti", String.class));
       return true;
-    } catch (SecurityException | MalformedJwtException | ExpiredJwtException | UnsupportedJwtException | IllegalArgumentException e) {
+    } catch (Exception e) {
       if (isCheckPath(servletRequest.getRequestURI(), servletRequest.getMethod())) {
         return true;
       }
