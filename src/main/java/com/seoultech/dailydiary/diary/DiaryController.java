@@ -91,9 +91,11 @@ public class DiaryController {
   }
 
   @GetMapping("/bookmark")
-  public ResponseEntity<DiaryListResponse> listBookmarkDiary(@ApiIgnore @Auth String memberId,
+  public ResponseEntity<DiaryListResponse> listBookmarkDiary(HttpServletRequest servletRequest,
       @RequestParam("sort") String sort,
       @RequestParam("limit") String limit, @RequestParam("lte") String lte) {
+    String token = resolveToken(servletRequest);
+    String memberId = validateToken(token);
     Member member = memberService.findMemberById(memberId);
     return ResponseEntity.ok()
         .body(DiaryListResponse.from(
