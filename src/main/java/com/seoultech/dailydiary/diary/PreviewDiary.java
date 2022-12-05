@@ -19,7 +19,7 @@ public class PreviewDiary {
   private List<String> tags;
   private String name;
   private String profileImage;
-  private String thumbnailImage;
+  private String image;
   private Author author;
   private Boolean isPublic;
 
