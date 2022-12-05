@@ -17,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 @RestController
-@RequestMapping("/images")
+@RequestMapping("/api/v1/images")
 @RequiredArgsConstructor
 public class ImageController {
 
