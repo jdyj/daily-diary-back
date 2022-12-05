@@ -42,7 +42,6 @@ public class Diary extends BaseTimeEntity {
   @OneToMany(mappedBy = "diary")
   private List<Bookmark> bookmarkList;
 
-  @Enumerated(EnumType.STRING)
   private Boolean isPublic;
 
   public void setThumbnailImage(Image thumbnailImage) {
