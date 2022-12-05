@@ -46,19 +46,15 @@ public class JwtFilter implements Filter {
       String method = httpRequest.getMethod();
 
       // 2. validateToken 으로 토큰 유효성 검사
-      if ((!validateToken(jwt, httpRequest) || !StringUtils.hasText(jwt))
-          && isCheckPath(requestURI, method)) {
+      if (isCheckPath(requestURI, method) && (!validateToken(jwt, httpRequest)
+          || !StringUtils.hasText(jwt))) {
         throw new IllegalAccessException("유효하지 않는 토큰입니다");
       }
       chain.doFilter(request, response);
     } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException | ExpiredJwtException | UnsupportedJwtException | IllegalArgumentException | IllegalAccessException e) {
-      HttpServletRequest httpRequest = (HttpServletRequest) request;
-      if (isCheckPath(httpRequest.getRequestURI(), httpRequest.getMethod())) {
-        chain.doFilter(request, response);
-      } else {
-        HttpServletResponse res = (HttpServletResponse) response;
-        res.sendError(HttpStatus.UNAUTHORIZED.value(), e.getMessage());
-      }
+      HttpServletResponse res = (HttpServletResponse) response;
+      res.sendError(HttpStatus.UNAUTHORIZED.value(), e.getMessage());
+
     } catch (Exception e) {
       HttpServletResponse res = (HttpServletResponse) response;
       res.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
