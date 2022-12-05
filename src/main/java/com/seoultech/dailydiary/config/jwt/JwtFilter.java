@@ -33,7 +33,7 @@ public class JwtFilter implements Filter {
       "/api/v1/diary",
       "/api/v1/diary/**",
       "/api/v1/images/**",
-      "/api/v1/members/**", "/api/v1/members"};
+      "/api/v1/members/**", "/api/v1/members", "/api/v1/bookmark"};
 
   @Override
   public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
