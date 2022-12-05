@@ -87,9 +87,9 @@ public class DiaryService {
   public List<PreviewDiary> publicList(String sort, Long limit, Long lte) {
     List<Diary> diaryList;
     if (sort.equals("ASC")) {
-      diaryList = diaryRepository.findDiariesLessThanId(lte);
-    } else {
       diaryList = diaryRepository.findDiariesGreaterThanId(lte);
+    } else {
+      diaryList = diaryRepository.findDiariesLessThanId(lte);
     }
 
     List<PreviewDiary> collect = new ArrayList<>();
@@ -110,9 +110,9 @@ public class DiaryService {
   public List<PreviewDiary> diaryList(Member member, String sort, Long limit, Long lte) {
     List<Diary> diaryList;
     if (sort.equals("ASC")) {
-      diaryList = diaryRepository.findDiariesLessThanId(lte);
-    } else {
       diaryList = diaryRepository.findDiariesGreaterThanId(lte);
+    } else {
+      diaryList = diaryRepository.findDiariesLessThanId(lte);
     }
 
     List<PreviewDiary> collect = new ArrayList<>();
