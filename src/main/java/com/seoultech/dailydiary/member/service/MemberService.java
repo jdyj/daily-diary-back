@@ -15,7 +15,6 @@ public class MemberService {
   private final MemberRepository memberRepository;
 
   public MyPage findMyPage(String memberId) {
-
     return null;
   }
 

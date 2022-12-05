@@ -1,4 +1,4 @@
-package com.seoultech.dailydiary.like;
+package com.seoultech.dailydiary.bookmark;
 
 
 import com.seoultech.dailydiary.BaseTimeEntity;
@@ -17,7 +17,7 @@ import lombok.Getter;
 
 @Entity
 @Getter
-public class Like extends BaseTimeEntity {
+public class Bookmark extends BaseTimeEntity {
 
 
   @EmbeddedId
@@ -31,11 +31,12 @@ public class Like extends BaseTimeEntity {
   @MapsId("diaryId")
   private Diary diary;
 
-  public Like(Member member, Diary diary) {
+  public Bookmark(Member member, Diary diary) {
     this.member = member;
     this.diary = diary;
     key = new Key(member.getId(), diary.getId());
-    diary.getLikeList().add(this);
+    diary.getBookmarkList().add(this);
+    member.getBookmarkList().add(this);
   }
 
   @Embeddable
@@ -51,6 +52,6 @@ public class Like extends BaseTimeEntity {
     }
   }
 
-  protected Like() {
+  protected Bookmark() {
   }
 }

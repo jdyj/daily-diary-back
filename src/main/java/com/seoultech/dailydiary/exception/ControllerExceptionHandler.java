@@ -1,6 +1,7 @@
 package com.seoultech.dailydiary.exception;
 
 import com.seoultech.dailydiary.exception.dto.BadRequestFailResponse;
+import com.seoultech.dailydiary.exception.dto.ForbiddenFailResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
@@ -15,6 +16,7 @@ public class ControllerExceptionHandler {
 
   @ExceptionHandler(value = {
       NotExistMemberException.class,
+      NotExistDiaryException.class
   })
   public ResponseEntity<BadRequestFailResponse> notFound(Exception e) {
     return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -26,24 +28,15 @@ public class ControllerExceptionHandler {
   }
 
   @ExceptionHandler(value = {
-      BindException.class,
-      MethodArgumentNotValidException.class
+      InvalidDiaryAccess.class
   })
-  public ResponseEntity validationError(BindException e) {
-    BindingResult bindingResult = e.getBindingResult();
-
-    StringBuilder builder = new StringBuilder();
-    for (FieldError fieldError : bindingResult.getFieldErrors()) {
-      builder.append("[");
-      builder.append(fieldError.getField());
-      builder.append("](은)는 ");
-      builder.append(fieldError.getDefaultMessage());
-      builder.append(" 입력된 값: [");
-      builder.append(fieldError.getRejectedValue());
-      builder.append("]\n");
-    }
-    return ResponseEntity.badRequest().body(builder.toString());
+  public ResponseEntity<ForbiddenFailResponse> forbidden(Exception e) {
+    return ResponseEntity.status(HttpStatus.FORBIDDEN)
+        .body(ForbiddenFailResponse.builder()
+            .status(HttpStatus.FORBIDDEN.value())
+            .message(e.getMessage())
+            .build()
+        );
   }
-
 
 }

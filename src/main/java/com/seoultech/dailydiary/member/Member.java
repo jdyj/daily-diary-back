@@ -1,7 +1,9 @@
 package com.seoultech.dailydiary.member;
 
+import com.seoultech.dailydiary.bookmark.Bookmark;
 import com.seoultech.dailydiary.image.Image;
-import java.util.Random;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -33,6 +35,9 @@ public class Member {
   @Enumerated(EnumType.STRING)
   @Column(nullable = false)
   private Role role;
+
+  @OneToMany(mappedBy = "member")
+  private List<Bookmark> bookmarkList = new ArrayList<>();
 
   public String getRoleKey() {
     return this.role.getKey();

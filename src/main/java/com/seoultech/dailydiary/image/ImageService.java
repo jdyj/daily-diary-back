@@ -1,14 +1,11 @@
 package com.seoultech.dailydiary.image;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import javax.imageio.ImageIO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -49,7 +46,7 @@ public class ImageService {
 
     List<Image> images = collect.stream()
         .map(
-            (name) -> new Image(name.getOriginalFilename(), name.getStoreFileName(), Category.POST))
+            (name) -> new Image(name.getOriginalFilename(), name.getStoreFileName(), Category.DIARY))
         .collect(Collectors.toList());
     imageRepository.saveAll(images);
 
