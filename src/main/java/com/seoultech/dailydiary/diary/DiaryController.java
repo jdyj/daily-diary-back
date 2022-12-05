@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +22,7 @@ import springfox.documentation.annotations.ApiIgnore;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/diary")
+@CrossOrigin
 public class DiaryController {
 
   private final DiaryService diaryService;
@@ -47,6 +49,12 @@ public class DiaryController {
   public ResponseEntity<DiaryListResponse> listPublicDiary(HttpServletRequest servletRequest,
       @RequestParam("sort") String sort,
       @RequestParam("limit") String limit, @RequestParam("lte") String lte) {
+
+    if (servletRequest.getAttribute("memberId") == null) {
+      return ResponseEntity.ok()
+          .body(DiaryListResponse.from(
+              diaryService.publicList(sort, Long.valueOf(limit), Long.valueOf(lte))));
+    }
 
     String memberId = servletRequest.getAttribute("memberId").toString();
     Member member = memberService.findMemberById(memberId);

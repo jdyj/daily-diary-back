@@ -29,6 +29,7 @@ public class JwtFilter implements Filter {
   private static final String[] whitelist = {"/api/v1/images", "/api/v1/members/login",
       "/docs/api-doc.html", "/favicon.ico",
       "/swagger-resources/**", "/v3/api-docs", "/swagger*/**", "/webjars/**", "/swagger-resources",
+      "/api/v1/diary",
       "/api/v1/images/**"};
 
   @Override

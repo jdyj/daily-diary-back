@@ -73,10 +73,39 @@ public class DiaryService {
     for (Diary diary : diaryList) {
       if (!diary.getIsPublic()) {
         if (diary.getMember().getId().equals(member.getId())) {
-          collect.add(PreviewDiary.from(diary, member));
+          collect.add(PreviewDiary.from(diary, diary.getMember()));
         }
       } else {
-        collect.add(PreviewDiary.from(diary, member));
+        collect.add(PreviewDiary.from(diary, diary.getMember()));
+      }
+    }
+
+    return collect;
+  }
+
+  public List<PreviewDiary> publicList(String sort, Long limit, Long lte) {
+    List<Diary> diaryList;
+    if (lte == null) {
+      diaryList = diaryRepository.findAll();
+    } else {
+      diaryList = diaryRepository.findDiariesGreaterThanId(lte);
+    }
+
+    if (limit != null) {
+      diaryList = diaryList.stream()
+          .limit(limit)
+          .collect(Collectors.toList());
+    }
+    if (sort.equals("ASC")) {
+      diaryList.sort(Comparator.comparing(Diary::getCreatedDate));
+    } else {
+      diaryList.sort((a1, a2) -> a2.getCreatedDate().compareTo(a1.getCreatedDate()));
+    }
+
+    List<PreviewDiary> collect = new ArrayList<>();
+    for (Diary diary : diaryList) {
+      if (diary.getIsPublic()) {
+        collect.add(PreviewDiary.from(diary, diary.getMember()));
       }
     }
 
@@ -106,10 +135,10 @@ public class DiaryService {
     for (Diary diary : diaryList) {
       if (!diary.getIsPublic()) {
         if (diary.getMember().getId().equals(member.getId())) {
-          collect.add(PreviewDiary.from(diary, member));
+          collect.add(PreviewDiary.from(diary, diary.getMember()));
         }
       } else {
-        collect.add(PreviewDiary.from(diary, member));
+        collect.add(PreviewDiary.from(diary, diary.getMember()));
       }
     }
 
