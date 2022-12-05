@@ -33,7 +33,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
       SecurityContextHolder.getContext().setAuthentication(authentication);
     } else {
       log.debug("유효한 Jwt 토큰이 존재하지 않습니다.");
-      throw new IllegalStateException();
     }
 
     filterChain.doFilter(request, response);
