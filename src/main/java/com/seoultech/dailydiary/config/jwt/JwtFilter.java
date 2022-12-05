@@ -41,9 +41,10 @@ public class JwtFilter implements Filter {
 
       String jwt = resolveToken(httpRequest);
       String requestURI = httpRequest.getRequestURI();
+      String method = httpRequest.getMethod();
 
       // 2. validateToken 으로 토큰 유효성 검사
-      if (isCheckPath(requestURI) && (!StringUtils.hasText(jwt) || !validateToken(jwt,
+      if (isCheckPath(requestURI, method) && (!StringUtils.hasText(jwt) || !validateToken(jwt,
           httpRequest))) {
         throw new IllegalAccessException("유효하지 않는 토큰입니다");
       }
@@ -57,7 +58,11 @@ public class JwtFilter implements Filter {
     }
   }
 
-  private boolean isCheckPath(String requestURI) {
+  private boolean isCheckPath(String requestURI, String method) {
+    if (requestURI.equals("/api/v1/diary") && method.equals("POST")) {
+      return true;
+    }
+
     return !PatternMatchUtils.simpleMatch(whitelist, requestURI);
   }
 
