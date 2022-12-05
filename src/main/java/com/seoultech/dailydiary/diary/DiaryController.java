@@ -67,13 +67,14 @@ public class DiaryController {
       @RequestParam("limit") String limit, @RequestParam("lte") String lte) {
 
     String token = resolveToken(servletRequest);
-    String memberId = validateToken(token);
 
-    if (memberId == null) {
+    if (token == null) {
       return ResponseEntity.ok()
           .body(DiaryListResponse.from(
               diaryService.publicList(sort, Long.valueOf(limit), Long.valueOf(lte))));
     }
+
+    String memberId = validateToken(token);
     Member member = memberService.findMemberById(memberId);
 
     return ResponseEntity.ok()
