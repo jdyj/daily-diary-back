@@ -21,16 +21,21 @@ public class DetailDiary {
   private List<String> tags;
   private String image;
   private Author author;
+  private List<String> bookmarkUser;
 
   public static DetailDiary from(Diary diary, Boolean isBookmark) {
     List<String> collect = diary.getDiaryHashtagList().stream()
         .map((diaryHashtag) -> diaryHashtag.getHashtag().getTag())
         .collect(Collectors.toList());
 
+    List<String> bookmarkUser = diary.getBookmarkList().stream()
+        .map(bookmark -> bookmark.getMember().getId())
+        .collect(Collectors.toList());
+
     return new DetailDiary(diary.getId(), diary.getTitle(), diary.getContents(),
         diary.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
         diary.getIsPublic(), isBookmark, collect,
-        diary.getThumbnailImage().getStoreFileName(), Author.from(diary.getMember()));
+        diary.getThumbnailImage().getStoreFileName(), Author.from(diary.getMember()), bookmarkUser);
   }
 
 }

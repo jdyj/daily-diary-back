@@ -1,5 +1,6 @@
 package com.seoultech.dailydiary.bookmark.service;
 
+import com.seoultech.dailydiary.bookmark.Bookmark.Key;
 import com.seoultech.dailydiary.diary.Diary;
 import com.seoultech.dailydiary.bookmark.Bookmark;
 import com.seoultech.dailydiary.bookmark.repository.BookmarkRepository;
@@ -13,10 +14,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class BookmarkService {
 
-  private final BookmarkRepository likeRepository;
+  private final BookmarkRepository bookmarkRepository;
 
-  public void likeDiary(Member member, Diary diary) {
-    likeRepository.save(new Bookmark(member, diary));
+  public void bookmarkDiary(Member member, Diary diary) {
+    if (bookmarkRepository.existsById(new Key(member.getId(), diary.getId()))) {
+      bookmarkRepository.deleteById(new Key(member.getId(), diary.getId()));
+    } else {
+      bookmarkRepository.save(new Bookmark(member, diary));
+    }
   }
 
 

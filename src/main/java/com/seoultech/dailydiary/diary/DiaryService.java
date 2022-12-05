@@ -57,12 +57,6 @@ public class DiaryService {
           .collect(Collectors.toList());
     }
 
-    if (limit != null) {
-      diaryList = diaryList.stream()
-          .limit(limit)
-          .collect(Collectors.toList());
-    }
-
     if (sort.equals("ASC")) {
       diaryList.sort(Comparator.comparing(Diary::getCreatedDate));
     } else {
@@ -70,13 +64,19 @@ public class DiaryService {
     }
 
     List<PreviewDiary> collect = new ArrayList<>();
+    long index = 1;
     for (Diary diary : diaryList) {
+      if (index > limit) {
+        break;
+      }
       if (!diary.getIsPublic()) {
         if (diary.getMember().getId().equals(member.getId())) {
           collect.add(PreviewDiary.from(diary));
+          index++;
         }
       } else {
         collect.add(PreviewDiary.from(diary));
+        index++;
       }
     }
 
@@ -91,11 +91,6 @@ public class DiaryService {
       diaryList = diaryRepository.findDiariesGreaterThanId(lte);
     }
 
-    if (limit != null) {
-      diaryList = diaryList.stream()
-          .limit(limit)
-          .collect(Collectors.toList());
-    }
     if (sort.equals("ASC")) {
       diaryList.sort(Comparator.comparing(Diary::getCreatedDate));
     } else {
@@ -103,9 +98,14 @@ public class DiaryService {
     }
 
     List<PreviewDiary> collect = new ArrayList<>();
+    long index = 1;
     for (Diary diary : diaryList) {
+      if (index > limit) {
+        break;
+      }
       if (diary.getIsPublic()) {
         collect.add(PreviewDiary.from(diary));
+        index++;
       }
     }
 
@@ -120,11 +120,6 @@ public class DiaryService {
       diaryList = diaryRepository.findDiariesGreaterThanId(lte);
     }
 
-    if (limit != null) {
-      diaryList = diaryList.stream()
-          .limit(limit)
-          .collect(Collectors.toList());
-    }
     if (sort.equals("ASC")) {
       diaryList.sort(Comparator.comparing(Diary::getCreatedDate));
     } else {
@@ -132,13 +127,19 @@ public class DiaryService {
     }
 
     List<PreviewDiary> collect = new ArrayList<>();
+    long index = 1;
     for (Diary diary : diaryList) {
+      if (index > limit) {
+        break;
+      }
       if (!diary.getIsPublic()) {
         if (diary.getMember().getId().equals(member.getId())) {
           collect.add(PreviewDiary.from(diary));
+          index++;
         }
       } else {
         collect.add(PreviewDiary.from(diary));
+        index++;
       }
     }
 

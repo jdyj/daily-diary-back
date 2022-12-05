@@ -11,7 +11,7 @@ public interface BookmarkRepository extends JpaRepository<Bookmark, Bookmark.Key
 
   List<Bookmark> findAllByMember(Member member);
 
-  boolean existsLikeByKey(Bookmark.Key key);
+  boolean existsByKey(Bookmark.Key key);
 
   void deleteAllByMember(Member member);
 

@@ -21,6 +21,7 @@ public class PreviewDiary {
   private String image;
   private Author author;
   private Boolean isPublic;
+  private List<String> bookmarkUser;
 
   public static PreviewDiary from(Diary diary) {
 
@@ -29,12 +30,18 @@ public class PreviewDiary {
         .map((diaryHashtag) -> diaryHashtag.getHashtag().getTag())
         .collect(Collectors.toList());
 
-    return new PreviewDiary(diary.getId(), diary.getTitle(), diary.getContents(),
-        diary.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), collectTags,
+    List<String> bookmarkUser = diary.getBookmarkList().stream()
+        .map(bookmark -> bookmark.getMember().getId()).collect(Collectors.toList());
+
+    return new PreviewDiary(diary.getId(),
+        diary.getTitle(),
+        diary.getContents(),
+        diary.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+        collectTags,
         diary.getMember().getName(),
         diary.getThumbnailImage().getStoreFileName(),
         Author.from(diary.getMember()),
-        diary.getIsPublic());
+        diary.getIsPublic(), bookmarkUser);
   }
 
 }

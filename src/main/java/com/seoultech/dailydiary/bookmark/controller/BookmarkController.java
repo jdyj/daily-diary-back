@@ -21,7 +21,7 @@ import springfox.documentation.annotations.ApiIgnore;
 @RequestMapping("/api/v1/bookmark")
 public class BookmarkController {
 
-  private final BookmarkService likeService;
+  private final BookmarkService bookmarkService;
   private final MemberService memberService;
   private final DiaryService diaryService;
 
@@ -31,7 +31,7 @@ public class BookmarkController {
     Member member = memberService.findMemberById(memberId);
     Diary diary = diaryService.findById(request.getDiaryId());
 
-    likeService.likeDiary(member, diary);
+    bookmarkService.bookmarkDiary(member, diary);
     return new ResponseEntity<>(HttpStatus.CREATED);
   }
 
