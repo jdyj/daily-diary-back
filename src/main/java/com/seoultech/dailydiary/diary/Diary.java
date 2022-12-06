@@ -7,6 +7,7 @@ import com.seoultech.dailydiary.member.Member;
 import com.seoultech.dailydiary.postHashtag.DiaryHashtag;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -29,6 +30,7 @@ public class Diary extends BaseTimeEntity {
 
   private String title;
 
+  @Column(length = 1000)
   private String contents;
 
   @ManyToOne(fetch = FetchType.LAZY)
